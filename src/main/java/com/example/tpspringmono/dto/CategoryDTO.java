@@ -25,7 +25,9 @@ public record CategoryDTO(int id, @NotBlank String nom, @Size(max = 100) String 
         category.setNom(nom);
         category.setDescription(description);
 
-        List<Produit> listeP = produitRepo.findAllById(produits());
+        List<Produit> listeP = produits == null
+                ? new java.util.ArrayList<Produit>()
+                : produitRepo.findAllById(produits);
         listeP.forEach(p-> p.setCat(category));
         category.setProduits(listeP);
         return category;

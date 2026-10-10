@@ -16,6 +16,9 @@ public class Produit {
     @Column(nullable = false, unique = true)
     private String reference;
 
+    @Column(nullable = false)
+    private String nom;
+
     @Column(length = 100)
     @Size(max = 100)
     private String description;

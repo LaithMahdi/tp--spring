@@ -1,12 +1,10 @@
 package com.example.tpspringmono.controllers;
 
 import com.example.tpspringmono.dto.CategoryDTO;
-import com.example.tpspringmono.entities.Category;
 import com.example.tpspringmono.services.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,21 +14,25 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/create")
-    public ResponseEntity<Category> createCategory(@RequestBody @Valid Category category) {
-         return categoryService.save(category);
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
+         return categoryService.save(categoryDTO);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@RequestParam int id, @RequestBody @Valid Category category) {
-        return categoryService.update(id, category);
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable int id, @RequestBody @Valid CategoryDTO categoryDTO) {
+        return categoryService.update(id, categoryDTO);
     }
 
 
     @GetMapping("/{id}")
-    public CategoryDTO getCategoryById(@RequestParam int id) {
+    public CategoryDTO getCategoryById(@PathVariable int id) {
         return categoryService.findById(id);
     }
 
 
+    @DeleteMapping("/{id}")
+    public void deleteCategory(@PathVariable int id) {
+        categoryService.delete(id);
+    }
 }

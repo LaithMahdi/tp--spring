@@ -1,0 +1,426 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "name": "tpspringmono",
+    "description": "Collection de test pour l'application de gestion de commandes (TP Spring Boot monolithique).\n\nOrdre conseille : 1) Categorie -> 2) Produit -> 3) Client -> 4) Commande.\nLes IDs crees sont stockes automatiquement dans les variables de collection (categoryId, produitId, clientId, commandeId).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "categoryId", "value": "1" },
+    { "key": "produitId", "value": "1" },
+    { "key": "clientId", "value": "1" },
+    { "key": "commandeId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Creer une categorie",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const data = pm.response.json();",
+                  "if (data.id) { pm.collectionVariables.set('categoryId', data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Informatique\",\n  \"description\": \"Produits informatiques\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/categories/create", "host": [ "{{baseUrl}}" ], "path": [ "categories", "create" ] }
+          }
+        },
+        {
+          "name": "Consulter une categorie",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/categories/{{categoryId}}", "host": [ "{{baseUrl}}" ], "path": [ "categories", "{{categoryId}}" ] }
+          }
+        },
+        {
+          "name": "Mettre a jour une categorie",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Informatique & Bureautique\",\n  \"description\": \"Produits informatiques et bureautiques\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/categories/{{categoryId}}", "host": [ "{{baseUrl}}" ], "path": [ "categories", "{{categoryId}}" ] }
+          }
+        },
+        {
+          "name": "Supprimer une categorie (doit echouer si produits)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200 si vide, 500 si contient des produits', function () { pm.response.to.be.oneOf([200,500]); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/categories/{{categoryId}}", "host": [ "{{baseUrl}}" ], "path": [ "categories", "{{categoryId}}" ] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Produits",
+      "item": [
+        {
+          "name": "Creer un produit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const data = pm.response.json();",
+                  "if (data.id) { pm.collectionVariables.set('produitId', data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reference\": \"REF-001\",\n  \"nom\": \"Clavier mecanique\",\n  \"description\": \"Clavier mecanique AZERTY\",\n  \"price\": 49.9,\n  \"stock\": 100,\n  \"categoryId\": {{categoryId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/produits/create", "host": [ "{{baseUrl}}" ], "path": [ "produits", "create" ] }
+          }
+        },
+        {
+          "name": "Consulter un produit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/produits/{{produitId}}", "host": [ "{{baseUrl}}" ], "path": [ "produits", "{{produitId}}" ] }
+          }
+        },
+        {
+          "name": "Mettre a jour un produit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reference\": \"REF-001\",\n  \"nom\": \"Clavier mecanique RGB\",\n  \"description\": \"Clavier mecanique AZERTY RGB\",\n  \"price\": 59.9,\n  \"stock\": 120,\n  \"categoryId\": {{categoryId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/produits/{{produitId}}", "host": [ "{{baseUrl}}" ], "path": [ "produits", "{{produitId}}" ] }
+          }
+        },
+        {
+          "name": "Produits d'une categorie",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produits/categorie/{{categoryId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "produits", "categorie", "{{categoryId}}" ]
+            }
+          }
+        },
+        {
+          "name": "Rechercher les produits par nom",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produits/recherche?nom=Clavier",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "produits", "recherche" ],
+              "query": [ { "key": "nom", "value": "Clavier" } ]
+            }
+          }
+        },
+        {
+          "name": "Supprimer un produit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/produits/{{produitId}}", "host": [ "{{baseUrl}}" ], "path": [ "produits", "{{produitId}}" ] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clients",
+      "item": [
+        {
+          "name": "Creer un client (avec adresse)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const data = pm.response.json();",
+                  "if (data.id) { pm.collectionVariables.set('clientId', data.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Alami\",\n  \"prenom\": \"Youssef\",\n  \"email\": \"youssef.alami@example.com\",\n  \"telephone\": \"0600000000\",\n  \"adresse\": {\n    \"rue\": \"12 Rue des Fleurs\",\n    \"ville\": \"Casablanca\",\n    \"codePostal\": \"20000\",\n    \"pays\": \"Maroc\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/clients/create", "host": [ "{{baseUrl}}" ], "path": [ "clients", "create" ] }
+          }
+        },
+        {
+          "name": "Creer un client avec email en double (doit echouer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Doit echouer (400/500)', function () { pm.response.to.be.oneOf([400,409,500]); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Alami\",\n  \"prenom\": \"Youssef\",\n  \"email\": \"youssef.alami@example.com\",\n  \"telephone\": \"0600000000\",\n  \"adresse\": {\n    \"rue\": \"12 Rue des Fleurs\",\n    \"ville\": \"Casablanca\",\n    \"codePostal\": \"20000\",\n    \"pays\": \"Maroc\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/clients/create", "host": [ "{{baseUrl}}" ], "path": [ "clients", "create" ] }
+          }
+        },
+        {
+          "name": "Consulter un client",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/clients/{{clientId}}", "host": [ "{{baseUrl}}" ], "path": [ "clients", "{{clientId}}" ] }
+          }
+        },
+        {
+          "name": "Mettre a jour un client",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Alami\",\n  \"prenom\": \"Youssef\",\n  \"email\": \"youssef.alami@example.com\",\n  \"telephone\": \"0611111111\",\n  \"adresse\": {\n    \"rue\": \"15 Avenue Hassan II\",\n    \"ville\": \"Rabat\",\n    \"codePostal\": \"10000\",\n    \"pays\": \"Maroc\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/clients/{{clientId}}", "host": [ "{{baseUrl}}" ], "path": [ "clients", "{{clientId}}" ] }
+          }
+        },
+        {
+          "name": "Supprimer un client",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/clients/{{clientId}}", "host": [ "{{baseUrl}}" ], "path": [ "clients", "{{clientId}}" ] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Commandes",
+      "item": [
+        {
+          "name": "Creer une commande",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const data = pm.response.json();",
+                  "if (data.id) { pm.collectionVariables.set('commandeId', data.id); }",
+                  "if (data.montantTotal !== undefined) { pm.test('Montant total calcule', function () { pm.expect(data.montantTotal).to.be.above(0); }); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": {{clientId}},\n  \"lignes\": [\n    { \"quantite\": 2, \"produitId\": {{produitId}} }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/commandes/create", "host": [ "{{baseUrl}}" ], "path": [ "commandes", "create" ] }
+          }
+        },
+        {
+          "name": "Creer une commande avec stock insuffisant (doit echouer, transaction annulee)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Doit echouer (400/500)', function () { pm.response.to.be.oneOf([400,409,500]); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": {{clientId}},\n  \"lignes\": [\n    { \"quantite\": 1000000, \"produitId\": {{produitId}} }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/commandes/create", "host": [ "{{baseUrl}}" ], "path": [ "commandes", "create" ] }
+          }
+        },
+        {
+          "name": "Consulter une commande",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/commandes/{{commandeId}}", "host": [ "{{baseUrl}}" ], "path": [ "commandes", "{{commandeId}}" ] }
+          }
+        },
+        {
+          "name": "Commandes d'un client",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [ "pm.test('Status 200', function () { pm.response.to.have.status(200); });" ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/commandes/client/{{clientId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "commandes", "client", "{{clientId}}" ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
