@@ -6,7 +6,7 @@ import com.example.tpspringmono.entities.Statut;
 import java.time.LocalDate;
 import java.util.List;
 
-public record CommandeDTO(int id, LocalDate dateCommande, Statut statut, double montantTotal,
+public record CommandeDTO(Integer id, LocalDate dateCommande, Statut statut, Double montantTotal,
                           Integer clientId, List<LigneCommandeDTO> lignes) {
 
 

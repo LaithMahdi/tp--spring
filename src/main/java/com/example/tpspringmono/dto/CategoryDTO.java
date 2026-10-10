@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record CategoryDTO(int id, @NotBlank String nom, @Size(max = 100) String description, List<Integer> produits) {
+public record CategoryDTO(Integer id, @NotBlank String nom, @Size(max = 100) String description, List<Integer> produits) {
 
 
     static public CategoryDTO toDto(Category category) {

@@ -6,7 +6,7 @@ import com.example.tpspringmono.repos.CategoryRepo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record ProduitDTO(int id, @NotBlank String reference, @NotBlank String nom,
+public record ProduitDTO(Integer id, @NotBlank String reference, @NotBlank String nom,
                          @Size(max = 100) String description, double price, int stock,
                          Integer categoryId) {
 
@@ -21,7 +21,7 @@ public record ProduitDTO(int id, @NotBlank String reference, @NotBlank String no
 
     public Produit fromDto(CategoryRepo categoryRepo) {
         Produit produit = new Produit();
-        produit.setId(id == 0 ? null : id);
+        produit.setId(id == null || id == 0 ? null : id);
         produit.setReference(reference);
         produit.setNom(nom);
         produit.setDescription(description);

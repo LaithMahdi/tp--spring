@@ -2,7 +2,7 @@ package com.example.tpspringmono.dto;
 
 import com.example.tpspringmono.entities.Adresse;
 
-public record AdresseDTO(int id, String rue, String ville, String codePostal, String pays) {
+public record AdresseDTO(Integer id, String rue, String ville, String codePostal, String pays) {
 
     static public AdresseDTO toDto(Adresse adresse) {
         if (adresse == null) {
@@ -15,7 +15,7 @@ public record AdresseDTO(int id, String rue, String ville, String codePostal, St
 
     public Adresse fromDto() {
         Adresse adresse = new Adresse();
-        adresse.setId(id == 0 ? null : id);
+        adresse.setId(id == null || id == 0 ? null : id);
         adresse.setRue(rue);
         adresse.setVille(ville);
         adresse.setCodePostal(codePostal);

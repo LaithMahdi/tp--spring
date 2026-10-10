@@ -2,7 +2,7 @@ package com.example.tpspringmono.dto;
 
 import com.example.tpspringmono.entities.LigneCommande;
 
-public record LigneCommandeDTO(int id, int quantite, double prixUnitaire, Integer produitId) {
+public record LigneCommandeDTO(Integer id, int quantite, Double prixUnitaire, Integer produitId) {
 
 
     static public LigneCommandeDTO toDto(LigneCommande ligne) {
