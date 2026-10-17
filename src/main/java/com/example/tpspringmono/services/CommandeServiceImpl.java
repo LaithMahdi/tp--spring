@@ -2,13 +2,10 @@ package com.example.tpspringmono.services;
 
 import com.example.tpspringmono.dto.CommandeDTO;
 import com.example.tpspringmono.dto.LigneCommandeDTO;
-import com.example.tpspringmono.entities.Commande;
-import com.example.tpspringmono.entities.LigneCommande;
-import com.example.tpspringmono.entities.Produit;
-import com.example.tpspringmono.entities.Statut;
+import com.example.tpspringmono.entities.*;
 import com.example.tpspringmono.repos.ClientRepo;
 import com.example.tpspringmono.repos.CommandeRepo;
-import com.example.tpspringmono.repos.ProduitRepo;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +18,9 @@ import java.util.List;
 public class CommandeServiceImpl implements CommandeService {
     private final CommandeRepo commandeRepo;
     private final ClientRepo clientRepo;
-    private final ProduitRepo produitRepo;
+    private final ProduitFeign produitRepo;
 
-    public CommandeServiceImpl(CommandeRepo commandeRepo, ClientRepo clientRepo, ProduitRepo produitRepo) {
+    public CommandeServiceImpl(CommandeRepo commandeRepo, ClientRepo clientRepo, ProduitFeign produitRepo) {
         this.commandeRepo = commandeRepo;
         this.clientRepo = clientRepo;
         this.produitRepo = produitRepo;
@@ -41,15 +38,20 @@ public class CommandeServiceImpl implements CommandeService {
         double montantTotal = 0;
         List<LigneCommande> lignes = new ArrayList<LigneCommande>();
         for (LigneCommandeDTO ligneDTO : commandeDTO.lignes()) {
-            Produit produit = produitRepo.findById(ligneDTO.produitId())
-                    .orElseThrow(() -> new IllegalArgumentException("Produit introuvable."));
+            Produit produit = produitRepo.getProduitById(ligneDTO.id());
+
+            if (produit == null ){
+                throw new IllegalArgumentException("Produit introuvable.");
+            }
+
+
 
             if (produit.getStock() < ligneDTO.quantite()) {
                 throw new IllegalStateException("Stock insuffisant pour le produit " + produit.getReference() + ".");
             }
 
             produit.setStock(produit.getStock() - ligneDTO.quantite());
-            produitRepo.save(produit);
+            produitRepo.updateProduit(produit.getId() ,produit);
 
             LigneCommande ligne = new LigneCommande();
             ligne.setQuantite(ligneDTO.quantite());

@@ -19,7 +19,7 @@ public class LigneCommande {
     @JoinColumn(name = "idCommande")
     private Commande commande;
 
-    @ManyToOne
-    @JoinColumn(name = "idProduit")
+    private int idP;
+    @Transient
     private Produit produit;
 }
